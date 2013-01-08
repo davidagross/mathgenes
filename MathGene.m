@@ -58,7 +58,8 @@ classdef MathGene
             %DOWNLOAD_GENE grabs gene information for future crawling
             
             % grab the web data
-            str = urlread(url);
+            obj.url = url;
+            str = urlread(obj.url);
             
             % exract the padding wrapper
             [s,e] = regexpi(str,...
@@ -107,9 +108,20 @@ classdef MathGene
                 'Advisor[^<]*<a href="id.php\?id=(?<ID>[^"]*)">' ...
                 '(?<name>[^<]*)</a>', ...
                 ],'names');
-            obj.url = url;
             for a = 1:numel(obj.advisor)
                 obj.advisor(a).url = obj.urlFromId(obj.advisor(a).ID);
+            end
+            
+            % extract student information
+            obj.student = regexpi(paddingWrapper,[ ...
+                '<tr[^>]*><td>' ...
+                '<a href="id.php\?id=(?<ID>[^"]*)">' ...
+                '(?<name>[^<]*)</a></td><td>'...
+                '(?<institution>[^<]*)</td>' ...
+                '<td[^>]*>(?<year>[^<]*)</td>' ...
+                '<td[^>]*>(?<descendents>[^<]*)</td></tr>'],'names');
+            for s = 1:numel(obj.student)
+                obj.student(s).url = obj.urlFromId(obj.student(s).ID);
             end
             
         end
