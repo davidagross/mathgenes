@@ -13,6 +13,7 @@ classdef MathGene < handle
         dissertation = 'not downloaded'; % the title of their dissertation
         advisor = [];  % the person's advisors
         student = [];  % the person's students
+        doDownloadSorted = true; % do we download from the sorted webpage
     end
     
     properties (Dependent = true)
@@ -79,7 +80,7 @@ classdef MathGene < handle
         
         function val = get.descendents(obj)
             %GET.DESCENDENTS returns the number of students
-            S = numel(obj.student);
+            S = size(obj.student,2);
             if S ~= 0, val = num2str(S); else val = ''; end
         end
         
@@ -87,7 +88,7 @@ classdef MathGene < handle
             %SET.DESCENDENTS sets the number of students in absence of data
             val = str2double(val);
             if ~isfinite(val), val = 0; end
-            obj.student = repmat(MathGene(),1,val);
+            obj.student = repmat(MathGene(),0,val);
         end
         
         function val = getMirror(obj)
@@ -97,12 +98,15 @@ classdef MathGene < handle
         
         function val = urlFromId(obj,varargin)
             %URLFROMID creates a person URL from a node ID
-            if isa(obj,'MathGene')
-                val = sprintf([obj.getMirror() ...
-                    'id.php?id=%i'],obj.ID);
+            if obj.doDownloadSorted
+                urlStr = 'id.php?id=%i&fChrono=1';
             else
-                val = sprintf([obj.getMirror() ...
-                    'id.php?id=%i'],varargin{1});
+                urlStr = 'id.php?id=%i';
+            end
+            if isa(obj,'MathGene')
+                val = sprintf([obj.getMirror() urlStr],obj.ID);
+            else
+                val = sprintf([obj.getMirror() urlStr],varargin{1});
             end
         end
         
@@ -280,6 +284,21 @@ classdef MathGene < handle
                     fprintf(1,['%i Student' plural '\n'],S);
                 end
                 fprintf('\n');
+            end
+        end
+        
+        function printDownloadedDescendents(obj,tab)
+            %PRINTALLDESCENDENTS prints a tree of all descendents
+            if nargin < 2, tab = ''; end
+            if strncmp(get(0,'Format'),'long',4)
+                fprintf(1,'%s%s %s (%s from %s)\n', ...
+                    tab,obj.year,obj.name,obj.degree,obj.institution);
+            else
+                fprintf(1,'%s%s %s\n',tab,obj.year,obj.name);
+            end
+            S = numel(obj.student);
+            for s = 1:S
+                obj.student(s).printDownloadedDescendents([tab '  ']);
             end
         end
         
