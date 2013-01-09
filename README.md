@@ -3,18 +3,8 @@ mathgenes
 
 a MATLAB script to crawl through someone's math genes online
 
-MathGene.m
-----------
-
-MathGene is a class that replaces math_gene. Each gene contains
-a structure leading into the past and toward the present from that
-gene's dissertation.
-
-This allows for crawling through the tree in any direction and should
-be a more robust data structure for larger data sets.
-
-math_genes.m (deprecated)
-------------
+math_genes.m (deprecated by MathGene.m)
+---------------------------------------
 
 math_genes crawls the AMS Math Genealogy Project into the past
 
@@ -27,6 +17,16 @@ math_genes(NODENUMBER) will crawl from a node id like:
   
 This function initiates unbridled recursion in the past and should be
 used with caution.
+
+MathGene.m
+----------
+
+MathGene is a class that replaces math_gene. Each gene contains
+a structure leading into the past and toward the present from that
+gene's dissertation.
+
+This allows for crawling through the tree in any direction and should
+be a more robust data structure for larger data sets.
 
 results
 -------
