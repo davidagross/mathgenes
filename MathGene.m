@@ -29,7 +29,7 @@ classdef MathGene < handle
     
     methods
         function obj = MathGene(varargin)
-            %MATHGENE(ID) will create a node from an id:
+            %MATHGENE(ID) will create a node from an id
             %    http://www.genealogy.ams.org/id.php?id=ID
             %MATHGENE() will create an empty math gene
             
@@ -115,6 +115,17 @@ classdef MathGene < handle
             end
         end
         
+        function obj = downloadAllDescendents(obj,tab)
+            %DOWNLOADALLDESCENDENTS grabs all of the descendent's genes
+            if nargin < 2, tab = ''; end
+            S = numel(obj.student);
+            for s = 1:S
+                fprintf('%sDownloading Student %i of %i\n',tab,s,S);
+                obj.student(s) = obj.student(s).downloadGene();
+                obj.student(s).downloadAllDescendents([tab '  ']);
+            end
+        end
+        
         function obj = downloadAdvisors(obj)
             %DOWNLOADADVISORS grabs the gene information for the advisors
             A = numel(obj.advisor);
@@ -196,10 +207,15 @@ classdef MathGene < handle
                 '(?<institution>[^<]*)</td>' ...
                 '<td[^>]*>(?<year>[^<]*)</td>' ...
                 '<td[^>]*>(?<descendents>[^<]*)</td></tr>'],'names');
-            obj.student = MathGene();
-            for s = 1:numel(studentarray)
-                studentarray(s).url = obj.urlFromId(studentarray(s).ID);
-                obj.student(s) = MathGene(studentarray(s));
+            S = numel(studentarray);
+            if S > 1
+                obj.student = MathGene();
+                for s = 1:S
+                    studentarray(s).url = obj.urlFromId(studentarray(s).ID);
+                    obj.student(s) = MathGene(studentarray(s));
+                end
+            else
+                obj.student = repmat(MathGene(),0);
             end
         end
         
