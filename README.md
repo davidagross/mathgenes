@@ -15,7 +15,7 @@ that's all it amounted to be.  Until Cleve Moler's recent blog post [1] about
 the Forsyhte Tree [2] I didn't see much use for it.  I was inspired by
 Cleve's lament and call to action to revive this code.
 
-This is how `MathGene` was born a couple days ago, bringing the code into 
+This is how `MathGene` was born, bringing the code into 
 a (slightly) cleaner, (slightly) more robust, object oriented context.
 math_gene is still provided here for posterity / anyone who wants to make
 improvements to the procedural version.
@@ -41,7 +41,7 @@ g =
      2 Advisors, 18 Students
 ```
 
-to automatically download his "gene".  We can look at his students:
+to automatically download his "gene".  We can look at a summary of his students:
 
 ```
 >> format long
@@ -80,7 +80,7 @@ Beresford Parlett | Stanford University | 1962 | 59
   Michael Malcolm | Stanford University | 1973 | 36
 ```
 
-who are not yet downloaded.  To downloaded and look at their genes:
+whose fulle genes are not yet downloaded.  To downloaded and look at their genes:
 
 ```
 >> g.downloadStudents;
@@ -101,14 +101,29 @@ ans =
      1 Advisor, 15 Students
 ```
 
-Finally, 
+We can go futher to download Forsythe's students' students, 
+and students' students' students, and so on, programmatically:
 
 ```
 >> g.downloadAllDescendents;
+Downloading Student 1 of 18
+Downloading Student 2 of 18
+  Downloading Student 1 of 26
+  Downloading Student 2 of 26
+    Downloading Student 1 of 3
+      Downloading Student 1 of 16
+... ... ... ... ...
+Downloading Student 18 of 18
+```
+
+Finally,
+
+```
 >> g.printDownloadedDescendents;
 ```
 
-Should be able to create the base (years & names) at least, of an updated Forsythe Tree.
+should be able to create the base (years, names, and degrees) 
+at least, of an updated Forsythe Tree, reproduced in this repository.
 
 `math_genes.m` (deprecated by `MathGene.m`)
 ---------------------------------------
