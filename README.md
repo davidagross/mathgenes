@@ -125,6 +125,12 @@ Finally,
 should be able to create the base (years, names, and degrees) 
 at least, of an updated Forsythe Tree, reproduced in this repository.
 
+These lists aren't quite the same as an "up to date" Forsythe Tree,
+however, the current/most recent insitution of the professorial parents 
+in the tree can be deduced from where all of their students have their
+Ph.D.'s.  There is still considerable effort to integrate this with
+contact information or pictures, but it's a start!
+
 `math_genes.m` (deprecated by `MathGene.m`)
 ---------------------------------------
 
